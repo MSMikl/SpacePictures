@@ -20,7 +20,7 @@ if __name__ == '__main__':
     delay = int(os.getenv('POST_PERIOD'))
     chat_id = os.getenv('CHAT_ID')
     tbot = telegram.Bot(token=telegram_token)
-    post_list = fetch_nasa_apod(nasa_token, count=1, download=False)
+    post_list = fetch_nasa_apod(nasa_token, count=5, download=False)
     for picture in post_list:
         try:
             tbot.send_photo(photo=picture, chat_id=chat_id)
