@@ -33,14 +33,18 @@ def fetch_spacex_last_launch():
 def fetch_nasa_apod(token, count=5):
     params = {'api_key': token, 'count': count}
     response = requests.get('https://api.nasa.gov/planetary/apod', params=params)
+    result_list = []
     for picture in response.json():
-        download_picture(picture['hdurl'], './images/NASA/')
-    
+        if picture['hdurl']:
+            download_picture(picture['hdurl'], './images/NASA/')
+            result_list.append(picture['hdurl'])
+    return result_list    
 
 
 def fetch_nasa_epic(token, count=5):
     params = {'api_key': token}
     response = requests.get('https://epic.gsfc.nasa.gov/api/natural', params=params)
+    result_list = []
     for picture in response.json():
         if count:
             url = 'https://epic.gsfc.nasa.gov/archive/natural/{}/{}/{}/png/{}.png'.format(
@@ -50,11 +54,15 @@ def fetch_nasa_epic(token, count=5):
                 picture['image'])
             download_picture(url, './images/NASA/EPIC/')
             count -= 1
+            result_list.append(url)
         else:
-            return
+            break
+    return result_list
+
     
 if __name__ == '__main__':
     nasa_token = 'pnjMEf1nJ28Ex3YktOmRbmLy9CEMsJMicBu7qHFJ'
     telegram_token = '5218325640:AAGfAiFpY-2J4ChJAZ6I1KbTLxuR5Jj_6Fg'
     tbot = telegram.Bot(token=telegram_token)
-    tbot.send_message(text='Hello World!', chat_id=176649151)
+    tbot.send_photo(photo=fetch_nasa_apod(nasa_token)[0], chat_id=176649151)
+    
