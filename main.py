@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import requests
+import telegram
 from urllib.parse import urlparse
 
 
@@ -54,4 +55,6 @@ def fetch_nasa_epic(token, count=5):
     
 if __name__ == '__main__':
     nasa_token = 'pnjMEf1nJ28Ex3YktOmRbmLy9CEMsJMicBu7qHFJ'
-    fetch_nasa_epic(nasa_token, 3)
+    telegram_token = '5218325640:AAGfAiFpY-2J4ChJAZ6I1KbTLxuR5Jj_6Fg'
+    tbot = telegram.Bot(token=telegram_token)
+    tbot.send_message(text='Hello World!', chat_id=176649151)
