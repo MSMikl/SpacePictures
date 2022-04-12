@@ -47,7 +47,6 @@ def fetch_nasa_epic(token, count=5):
                 picture['identifier'][4:6],
                 picture['identifier'][6:8],
                 picture['image'])
-            print(url)
             download_picture(url, './images/NASA/EPIC/')
             count -= 1
         else:
