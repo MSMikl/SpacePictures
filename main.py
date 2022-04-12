@@ -41,11 +41,10 @@ def fetch_nasa_apod(token, count=5, download=True):
     result_list = []
     for picture in response.json():
         try:
+            result_list.append(picture['hdurl'])
             if download:
                 download_picture(picture['hdurl'], './images/NASA/')
-            result_list.append(picture['hdurl'])
         except:
-            print('skip')
             continue
     return result_list    
 
@@ -83,5 +82,4 @@ if __name__ == '__main__':
             tbot.send_photo(photo=picture, chat_id=chat_id)
             time.sleep(delay)
         except:
-            print('Error')
             continue
