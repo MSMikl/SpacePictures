@@ -1,8 +1,10 @@
 import os
+import time
 from pathlib import Path
 
 import requests
 import telegram
+from dotenv import load_dotenv
 from urllib.parse import urlparse
 
 
@@ -19,29 +21,36 @@ def file_extension_check(url):
     return os.path.splitext(urlparse(url).path)[1]
         
         
-def fetch_spacex_last_launch():
+def fetch_spacex_last_launch(download=True):
     response = requests.get('https://api.spacexdata.com/v4/launches/')
     response.raise_for_status()
     launch_data = response.json()
     launch_number = 0
+    result_list = []
     while not launch_data[launch_number]['links']['flickr']['original']:
         launch_number += 1
-    for picture in launch_data[launch_number]['links']['flickr']['original']:
-        download_picture(picture, './images/spaceX/')
+    for url in launch_data[launch_number]['links']['flickr']['original']:
+        if download:
+            download_picture(url, './images/spaceX/')
+        result_list.append(url)
  
 
-def fetch_nasa_apod(token, count=5):
+def fetch_nasa_apod(token, count=5, download=True):
     params = {'api_key': token, 'count': count}
     response = requests.get('https://api.nasa.gov/planetary/apod', params=params)
     result_list = []
     for picture in response.json():
-        if picture['hdurl']:
-            download_picture(picture['hdurl'], './images/NASA/')
+        try:
+            if download:
+                download_picture(picture['hdurl'], './images/NASA/')
             result_list.append(picture['hdurl'])
+        except:
+            print('skip')
+            continue
     return result_list    
 
 
-def fetch_nasa_epic(token, count=5):
+def fetch_nasa_epic(token, count=5, download=True):
     params = {'api_key': token}
     response = requests.get('https://epic.gsfc.nasa.gov/api/natural', params=params)
     result_list = []
@@ -52,7 +61,8 @@ def fetch_nasa_epic(token, count=5):
                 picture['identifier'][4:6],
                 picture['identifier'][6:8],
                 picture['image'])
-            download_picture(url, './images/NASA/EPIC/')
+            if download:
+                download_picture(url, './images/NASA/EPIC/')
             count -= 1
             result_list.append(url)
         else:
@@ -61,8 +71,17 @@ def fetch_nasa_epic(token, count=5):
 
     
 if __name__ == '__main__':
-    nasa_token = 'pnjMEf1nJ28Ex3YktOmRbmLy9CEMsJMicBu7qHFJ'
-    telegram_token = '5218325640:AAGfAiFpY-2J4ChJAZ6I1KbTLxuR5Jj_6Fg'
+    load_dotenv()
+    nasa_token = os.getenv('NASA_TOKEN')
+    telegram_token = os.getenv('TG_TOKEN')
+    delay = int(os.getenv('POST_PERIOD'))
+    chat_id = os.getenv('CHAT_ID')
     tbot = telegram.Bot(token=telegram_token)
-    tbot.send_photo(photo=fetch_nasa_apod(nasa_token)[0], chat_id=176649151)
-    
+    post_list = fetch_nasa_apod(nasa_token, count=5, download=False)
+    for picture in post_list:
+        try:
+            tbot.send_photo(photo=picture, chat_id=chat_id)
+            time.sleep(delay)
+        except:
+            print('Error')
+            continue
