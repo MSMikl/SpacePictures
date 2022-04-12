@@ -6,13 +6,13 @@ from dotenv import load_dotenv
 from urllib.parse import urlparse
 
 from fetch_spacex import fetch_spacex_last_launch
-from fetch_nasa import fetch_nasa_apod, fetch_nasa_epic 
-          
+from fetch_nasa import fetch_nasa_apod, fetch_nasa_epic
+
 
 def file_extension_check(url):
     return os.path.splitext(urlparse(url).path)[1]
 
-    
+
 if __name__ == '__main__':
     load_dotenv()
     nasa_token = os.getenv('NASA_TOKEN')

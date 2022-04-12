@@ -5,7 +5,9 @@ from download_picture import download_picture
 
 def fetch_nasa_apod(token, count=5, download=True):
     params = {'api_key': token, 'count': count}
-    response = requests.get('https://api.nasa.gov/planetary/apod', params=params)
+    response = requests.get(
+        'https://api.nasa.gov/planetary/apod',
+        params=params)
     result_list = []
     for picture in response.json():
         try:
@@ -14,12 +16,14 @@ def fetch_nasa_apod(token, count=5, download=True):
                 download_picture(picture['hdurl'], './images/NASA/')
         except:
             continue
-    return result_list    
+    return result_list
 
 
 def fetch_nasa_epic(token, count=5, download=True):
     params = {'api_key': token}
-    response = requests.get('https://epic.gsfc.nasa.gov/api/natural', params=params)
+    response = requests.get(
+        'https://epic.gsfc.nasa.gov/api/natural',
+        params=params)
     result_list = []
     for picture in response.json():
         if count:

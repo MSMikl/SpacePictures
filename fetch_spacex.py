@@ -1,3 +1,8 @@
+import requests
+
+from download_picture import download_picture
+
+
 def fetch_spacex_last_launch(download=True):
     response = requests.get('https://api.spacexdata.com/v4/launches/')
     response.raise_for_status()
