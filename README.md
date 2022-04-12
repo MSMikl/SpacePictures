@@ -1,6 +1,8 @@
 # Space Pictures телеграм-бот
 
-Скрипт предназначен для регулярного размещения в Telegram фотографий с сервисов NASA и SpaceX
+Скрипт предназначен для регулярного размещения в Telegram фотографий с сервисов NASA и SpaceX.
+
+В текущей версии скрипта публикуются случайные [Astronomy Picture of the Day](https://apod.nasa.gov/apod/astropix.html). Но в коде также реализованы функции получения фотографий NASA [EPIC](https://epic.gsfc.nasa.gov/) и запусков SpaceX (фотографии запусков с Flickr).
 
 ## Установка
 
