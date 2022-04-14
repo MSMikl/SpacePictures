@@ -10,12 +10,15 @@ def fetch_nasa_apod(token, count=5, download=True):
         params=params)
     result_links = []
     for picture in response.json():
-        try:
-            result_links.append(picture['hdurl'])
-            if download:
+        if download:
+            try:
                 download_picture(picture['hdurl'], './images/NASA/')
-        except:
-            continue
+            except requests.exceptions.ConnectionError:
+                print('Невозможно скачать картинку по ссылке', picture['hdurl'])
+                continue
+            except requests.exceptions.MissingSchema:
+                print(picture['hdurl'], 'не является ссылкой')
+        result_links.append(picture['hdurl'])
     return result_links
 
 
