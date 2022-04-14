@@ -24,6 +24,8 @@ if __name__ == '__main__':
     for picture in post_list:
         try:
             tbot.send_photo(photo=picture, chat_id=chat_id)
+            print('Опубликовано фото', picture)
             time.sleep(delay)
         except:
             continue
+    print('Скрипт завершил работу')
