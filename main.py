@@ -9,7 +9,7 @@ from fetch_spacex import fetch_spacex_last_launch
 from fetch_nasa import fetch_nasa_apod, fetch_nasa_epic
 
 
-def file_extension_check(url):
+def get_file_extension(url):
     return os.path.splitext(urlparse(url).path)[1]
 
 
