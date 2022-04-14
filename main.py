@@ -20,11 +20,11 @@ if __name__ == '__main__':
     delay = int(os.getenv('POST_PERIOD'))
     chat_id = os.getenv('CHAT_ID')
     tbot = telegram.Bot(token=telegram_token)
-    post_list = fetch_nasa_apod(nasa_token, count=5, download=False)
-    for picture in post_list:
+    post_links = fetch_nasa_apod(nasa_token, count=5, download=False)
+    for picture_link in post_links:
         try:
-            tbot.send_photo(photo=picture, chat_id=chat_id)
-            print('Опубликовано фото', picture)
+            tbot.send_photo(photo=picture_link, chat_id=chat_id)
+            print('Опубликовано фото', picture_link)
             time.sleep(delay)
         except:
             continue

@@ -8,15 +8,15 @@ def fetch_nasa_apod(token, count=5, download=True):
     response = requests.get(
         'https://api.nasa.gov/planetary/apod',
         params=params)
-    result_list = []
+    result_links = []
     for picture in response.json():
         try:
-            result_list.append(picture['hdurl'])
+            result_links.append(picture['hdurl'])
             if download:
                 download_picture(picture['hdurl'], './images/NASA/')
         except:
             continue
-    return result_list
+    return result_links
 
 
 def fetch_nasa_epic(token, count=5, download=True):
@@ -24,7 +24,7 @@ def fetch_nasa_epic(token, count=5, download=True):
     response = requests.get(
         'https://epic.gsfc.nasa.gov/api/natural',
         params=params)
-    result_list = []
+    result_links = []
     for picture in response.json():
         if count:
             url = 'https://epic.gsfc.nasa.gov/archive/natural/{}/{}/{}/png/{}.png'.format(
@@ -35,7 +35,7 @@ def fetch_nasa_epic(token, count=5, download=True):
             if download:
                 download_picture(url, './images/NASA/EPIC/')
             count -= 1
-            result_list.append(url)
+            result_links.append(url)
         else:
             break
-    return result_list
+    return result_links
