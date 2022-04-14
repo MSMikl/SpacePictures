@@ -18,3 +18,17 @@ Python3 должен быть уже установлен. Затем испол
 2. `TG_TOKEN =`  API-токен чат-бота Telegram ([как создать чат-бота](https://tlgrm.ru/docs/bots#kak-sozdat-bota)) 
 3. `POST_PERIOD = 86400` период публикации в секундах
 4. `CHAT_ID =` имя канала или чата, в который будут публиковаться фото
+
+## Запуск
+
+`$ main.py`
+
+```
+>>>main.py
+Опубликовано фото https://apod.nasa.gov/apod/image/1801/c2016_r2_2018_01_07dpjjc.jpg
+Опубликовано фото https://apod.nasa.gov/apod/image/2009/Orion3Ddavison.png
+Опубликовано фото https://apod.nasa.gov/apod/image/0201/taurus_orman_lab.jpg
+Опубликовано фото https://apod.nasa.gov/apod/image/0903/5hOHPsanterne.jpg
+Опубликовано фото https://apod.nasa.gov/apod/image/1801/Helix_CFHT_2000.jpg
+Скрипт завершил работу
+```
