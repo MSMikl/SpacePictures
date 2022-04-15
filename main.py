@@ -20,12 +20,12 @@ if __name__ == '__main__':
     delay = int(os.getenv('POST_PERIOD'))
     chat_id = os.getenv('CHAT_ID')
     tbot = telegram.Bot(token=telegram_token)
-    post_links = fetch_nasa_apod(nasa_token, count=5, download=True)
+    post_links = fetch_nasa_apod(nasa_token, count=5, download=False)
     for picture_link in post_links:
         try:
             tbot.send_photo(photo=picture_link, chat_id=chat_id)
         except telegram.error.BadRequest:
-            print('Некорректная ссылка')
+            print('Некорректная ссылка', picture_link)
             continue
         print('Опубликовано фото', picture_link)
         time.sleep(delay)

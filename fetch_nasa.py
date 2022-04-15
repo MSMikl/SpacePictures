@@ -1,3 +1,4 @@
+import datetime
 import requests
 
 from download_picture import download_picture
@@ -10,15 +11,17 @@ def fetch_nasa_apod(token, count=5, download=True):
         params=params)
     result_links = []
     for picture in response.json():
-        if download:
-            try:
-                download_picture(picture['hdurl'], './images/NASA/')
-            except requests.exceptions.ConnectionError:
-                print('Невозможно скачать картинку по ссылке', picture['hdurl'])
-                continue
-            except requests.exceptions.MissingSchema:
-                print(picture['hdurl'], 'не является ссылкой')
-        result_links.append(picture['hdurl'])
+        if picture['hdurl']:
+            if download:
+                try:
+                    download_picture(picture['hdurl'], './images/NASA/')
+                except requests.exceptions.ConnectionError:
+                    print('Невозможно скачать картинку по ссылке', picture['hdurl'])
+                    continue
+                except requests.exceptions.MissingSchema:
+                    print(picture['hdurl'], 'не является ссылкой')
+                    continue
+            result_links.append(picture['hdurl'])
     return result_links
 
 
@@ -30,10 +33,11 @@ def fetch_nasa_epic(token, count=5, download=True):
     result_links = []
     for picture in response.json():
         if count:
-            url = 'https://epic.gsfc.nasa.gov/archive/natural/{}/{}/{}/png/{}.png'.format(
-                picture['identifier'][:4],
-                picture['identifier'][4:6],
-                picture['identifier'][6:8],
+            date = datetime.datetime.strptime(picture['identifier'], '%Y%m%d%f')
+            url = 'https://epic.gsfc.nasa.gov/archive/natural/{}/{:02d}/{:02d}/png/{}.png'.format(
+                date.year,
+                date.month,
+                date.day,
                 picture['image'])
             if download:
                 download_picture(url, './images/NASA/EPIC/')
