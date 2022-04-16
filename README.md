@@ -22,13 +22,3 @@ Python3 должен быть уже установлен. Затем испол
 ## Запуск
 
 `$ main.py`
-
-```
->>>main.py
-Опубликовано фото https://apod.nasa.gov/apod/image/1801/c2016_r2_2018_01_07dpjjc.jpg
-Опубликовано фото https://apod.nasa.gov/apod/image/2009/Orion3Ddavison.png
-Опубликовано фото https://apod.nasa.gov/apod/image/0201/taurus_orman_lab.jpg
-Опубликовано фото https://apod.nasa.gov/apod/image/0903/5hOHPsanterne.jpg
-Опубликовано фото https://apod.nasa.gov/apod/image/1801/Helix_CFHT_2000.jpg
-Скрипт завершил работу
-```
