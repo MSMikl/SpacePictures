@@ -1,4 +1,5 @@
 import datetime
+import logging
 import requests
 
 from download_picture import download_picture
@@ -20,12 +21,18 @@ def fetch_nasa_apod(token, count=5, download=True):
         try:
             download_picture(picture['hdurl'], './images/NASA/')
         except requests.exceptions.ConnectionError:
-            print(
-                'Невозможно скачать картинку по ссылке',
+            logging.error(
+                str(datetime.datetime.ctime()) +
+                ': Невозможно скачать картинку по ссылке ' +
                 picture['hdurl']
             )
+            continue
         except requests.exceptions.MissingSchema:
-            print(picture['hdurl'], 'не является ссылкой')
+            logging.error(
+                str(datetime.datetime.ctime()) +
+                picture['hdurl'] +
+                ' не является ссылкой'
+            )
     return result_links
 
 

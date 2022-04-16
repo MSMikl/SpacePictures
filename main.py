@@ -1,3 +1,4 @@
+import logging
 import os
 import time
 
@@ -14,6 +15,7 @@ def get_file_extension(url):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(filename="work.log", level=logging.INFO)
     load_dotenv()
     nasa_token = os.getenv('NASA_TOKEN')
     telegram_token = os.getenv('TG_TOKEN')
@@ -25,8 +27,16 @@ if __name__ == '__main__':
         try:
             tbot.send_photo(photo=picture_link, chat_id=chat_id)
         except telegram.error.BadRequest:
-            print('Некорректная ссылка', picture_link)
+            logging.error(
+                str(time.ctime()) +
+                ': Некорректная ссылка ' + 
+                picture_link
+            )
             continue
-        print('Опубликовано фото', picture_link)
+        logging.info(
+            str(time.ctime()) +
+            ': Опубликовано фото ' +
+            picture_link
+        )
         time.sleep(delay)
-    print('Скрипт завершил работу')
+    logging.info(str(time.ctime()), ': Скрипт завершил работу')
