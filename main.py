@@ -27,16 +27,16 @@ if __name__ == '__main__':
         try:
             tbot.send_photo(photo=picture_link, chat_id=chat_id)
         except telegram.error.BadRequest:
-            logging.error(
-                str(time.ctime()) +
-                ': Некорректная ссылка ' + 
+            logging.error('{} : Некорректная ссылка {}',format(
+                str(time.ctime()),
                 picture_link
+                )
             )
             continue
-        logging.info(
-            str(time.ctime()) +
-            ': Опубликовано фото ' +
+        logging.info('{}: Опубликовано фото {}'.format(
+            str(time.ctime()),
             picture_link
+            )
         )
         time.sleep(delay)
-    logging.info(str(time.ctime()), ': Скрипт завершил работу')
+    logging.info('{}: Скрипт завершил работу'.format(str(time.ctime())))

@@ -1,5 +1,7 @@
 import datetime
 import logging
+from pathlib import Path
+
 import requests
 
 from download_picture import download_picture
@@ -12,6 +14,9 @@ def fetch_nasa_apod(token, count=5, download=True):
         params=params
     )
     result_links = []
+    path = './images/NASA/'
+    if download:
+        Path(path).mkdir(parents=True, exist_ok=True)
     for picture in response.json():
         if not picture['hdurl']:
             continue
@@ -19,19 +24,19 @@ def fetch_nasa_apod(token, count=5, download=True):
         if not download:
             continue
         try:
-            download_picture(picture['hdurl'], './images/NASA/')
+            download_picture(picture['hdurl'], path=path)
         except requests.exceptions.ConnectionError:
-            logging.error(
-                str(datetime.datetime.ctime()) +
-                ': Невозможно скачать картинку по ссылке ' +
+            logging.error('{}: Невозможно скачать картинку по ссылке {}'.format(
+                str(datetime.datetime.ctime()),
                 picture['hdurl']
+                )
             )
             continue
         except requests.exceptions.MissingSchema:
-            logging.error(
-                str(datetime.datetime.ctime()) +
-                picture['hdurl'] +
-                ' не является ссылкой'
+            logging.error('{} {} не является ссылкой'.format(
+                str(datetime.datetime.ctime()),
+                picture['hdurl']
+                )
             )
     return result_links
 
@@ -43,6 +48,9 @@ def fetch_nasa_epic(token, count=5, download=True):
         params=params
     )
     result_links = []
+    path = './images/NASA/EPIC/'
+    if download:
+        Path(path).mkdir(parents=True, exist_ok=True)
     for picture in response.json():
         if not count:
             break
@@ -57,7 +65,7 @@ def fetch_nasa_epic(token, count=5, download=True):
             picture['image']
         )
         if download:
-            download_picture(url, './images/NASA/EPIC/')
+            download_picture(url, path=path)
         count -= 1
         result_links.append(url)
     return result_links
